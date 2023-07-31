@@ -18,7 +18,7 @@ COPY --from=builder /publish .
 
 
 EXPOSE 80
-
+ENV DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false
 CMD ["./ProjectManagement.WebApi"]
 
 
