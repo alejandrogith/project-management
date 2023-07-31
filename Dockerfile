@@ -15,8 +15,10 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine as final
 
 WORKDIR /app
 COPY --from=builder /publish .
-EXPOSE 80
 
+
+EXPOSE 80
+ENV DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false
 CMD ["./ProjectManagement.WebApi"]
 
 
