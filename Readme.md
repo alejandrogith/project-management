@@ -1,7 +1,11 @@
-# Read Me First
+# Proyect Management
 
-The following was discovered as part of building this project:
+Consiste en un RestApi para la gestión de proyectos en equipos
 
-- The original package name 'com.example.PostSpring-Boot-Example' is invalid and this project uses 'com.example.PostSpringBootExample' instead.
+Características
 
-# Getting Started
+- Manejo de proyectos, usuarios, tareas comentarios y categorías.
+- Manejo de seguridad con login y registro y autenticacion con JWT y Autorizacion con Roles.
+- Documentacion con swagger
+
+Tecnologias: Asp.net, c#, Identity.Net, Sql Server, Html, Css, Javascript.
