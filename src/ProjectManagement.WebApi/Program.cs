@@ -23,8 +23,8 @@ builder.Services.AddSwaggerGen(swagger =>
     swagger.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "ASP.NET 6 API REST------",
-        Description = "ASP.NET 6 Web API"
+        Title = "ASP.NET 6 WebAPI - Clean Architecture",
+        Description = "Proyect .NET 6 WebApi Proyect Management"
     });
     // To Enable authorization using Swagger (JWT)  
 
