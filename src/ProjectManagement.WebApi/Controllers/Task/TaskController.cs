@@ -3,6 +3,7 @@ using ProjectManagement.Modules.Commons.Application.Dtos;
 using ProjectManagement.Modules.Tasks.Application.Dtos;
 using ProjectManagement.Modules.Tasks.Application.ports.Input;
 using ProjectManagement.Modules.Tasks.Domain.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace ProjectManagement.WebApi.Controllers.Task
 {
@@ -20,6 +21,7 @@ namespace ProjectManagement.WebApi.Controllers.Task
             _taskUseCase = taskUseCase;
         }
 
+        [SwaggerOperation("Find All Tasks")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<  PaginatedDataDto<TaskDomain> >> FindAll([FromRoute] int proyectId, [FromQuery] TaskRequestParams reqParams)
@@ -31,7 +33,7 @@ namespace ProjectManagement.WebApi.Controllers.Task
 
 
 
-
+        [SwaggerOperation("Create a new Task")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -43,7 +45,7 @@ namespace ProjectManagement.WebApi.Controllers.Task
             return CreatedAtAction(nameof(Save), Task);
         }
 
-
+        [SwaggerOperation("Find Tasks By Id")]
         [HttpGet("{id}")]
         public async Task<ActionResult<TaskResponseDto>> FindById([FromRoute] int proyectId, [FromRoute] int id)
         {
@@ -53,16 +55,16 @@ namespace ProjectManagement.WebApi.Controllers.Task
         }
 
 
-
+        [SwaggerOperation("Update a Task")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<TaskResponseDto>> Update([FromRoute] int proyectId, [FromRoute] int id, [FromBody] TaskRequestDto taskRequest)
+        public async Task<ActionResult> Update([FromRoute] int proyectId, [FromRoute] int id, [FromBody] TaskRequestDto taskRequest)
         {
-           var Task= await _taskUseCase.Update(proyectId,id, taskRequest);
+            await _taskUseCase.Update(proyectId,id, taskRequest);
 
-            return Ok(Task);
+            return NoContent();
         }
 
-
+        [SwaggerOperation("Delete a Task")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{id}")]

@@ -15,7 +15,7 @@ namespace ProjectManagement.Modules.Tasks.Application.ports.Output
 
          public Task<bool> Exist(int proyectId, int Id);
 
-        public Task<TaskDomain> Update(int proyectId,TaskDomain task);
+        public Task Update(int proyectId,TaskDomain task);
 
 
         public Task Delete(int Id);

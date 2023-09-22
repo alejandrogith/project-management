@@ -1,14 +1,13 @@
 using ProjectManagement.Modules.Proyects.Infraestructure;
 using ProjectManagement.Modules.Commons.Infraestructure;
-using System.Reflection;
-using FluentValidation;
-using FluentValidation.AspNetCore;
+
 using ProjectManagement.WebApi.Middlewares;
 using ProjectManagement.Modules.Tasks.Infraestructure;
 using Microsoft.OpenApi.Models;
 using ProjectManagement.Modules.Comments.Infraestructure;
 using ProjectManagement.Modules.Tags.Infraestructure;
 using ProjectManagement.Modules.AuthUser.Infraestructure;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>
 {
+    swagger.EnableAnnotations();
     swagger.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
@@ -72,8 +72,6 @@ builder.Services.AddAuthUserModule(_configuration);
 
 
 
-builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-builder.Services.AddFluentValidationAutoValidation();
 
 
 builder.Services.AddCors(p =>
@@ -90,7 +88,15 @@ builder.Services.AddCors(p =>
 });
 
 
+
 var app = builder.Build();
+
+
+
+
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -113,5 +119,8 @@ app.MapControllers();
 app.Run();
 
 
+public partial class Program { }
 
-  public partial class Program { }
+
+
+

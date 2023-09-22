@@ -3,6 +3,7 @@ using ProjectManagement.Modules.Commons.Application.Dtos;
 using ProjectManagement.Modules.Tags.Application.Dtos;
 using ProjectManagement.Modules.Tags.Application.Ports.Input;
 using ProjectManagement.Modules.Tags.Domain.Entitites;
+using Swashbuckle.AspNetCore.Annotations;
 using static ProjectManagement.WebApi.Middlewares.ExceptionHandlerMiddleware;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -22,7 +23,7 @@ namespace ProjectManagement.WebApi.Controllers.Tag
         }
 
 
-
+        [SwaggerOperation("Find All Tags")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<PaginatedDataDto<TagDomain>>> FindAll([FromQuery] TagRequestParams requestParams)
@@ -32,19 +33,19 @@ namespace ProjectManagement.WebApi.Controllers.Tag
             return Ok(Tags);
         }
 
-
+        [SwaggerOperation("Update a Tag")]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TagResponseDto>> Update([FromRoute] int id,TagRequestDto tagRequest)
+        public async Task<ActionResult> Update([FromRoute] int id,TagRequestDto tagRequest)
         {
-            var Tag= await _tagUseCase.Update(id,tagRequest);
+           await _tagUseCase.Update(id,tagRequest);
 
-            return Ok(Tag);
+            return NoContent();
         }
 
 
-
+        [SwaggerOperation("Create a new Tag")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<TagResponseDto>> Save([FromBody] TagRequestDto tagRequest)
@@ -54,7 +55,7 @@ namespace ProjectManagement.WebApi.Controllers.Tag
             return CreatedAtAction(nameof(Save), Tag);
         }
 
-
+        [SwaggerOperation("Find Tag by Id")]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
@@ -66,7 +67,7 @@ namespace ProjectManagement.WebApi.Controllers.Tag
             return Ok(Tag);
         }
 
-
+        [SwaggerOperation("Delete a Tag")]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]

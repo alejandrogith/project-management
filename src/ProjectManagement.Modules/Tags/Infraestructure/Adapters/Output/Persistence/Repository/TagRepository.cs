@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Modules.Commons.Application.Dtos;
 using ProjectManagement.Modules.Commons.Infraestructure.Persistence;
 using ProjectManagement.Modules.Tags.Application.Dtos;
@@ -55,7 +56,7 @@ namespace ProjectManagement.Modules.Tags.Infraestructure.Adapters.Output.Persist
             var Tags = await Query
                             .Skip(requestParams.PageSize * (requestParams.PageIndex - 1))
                             .Take(requestParams.PageSize)
-                            .Select(x => TagMapperEntity.MapToDomain(x))
+                            .Select(x => x.Adapt<TagDomain>())
                             .AsNoTracking()
                             .ToListAsync();
 
@@ -72,22 +73,22 @@ namespace ProjectManagement.Modules.Tags.Infraestructure.Adapters.Output.Persist
         {
             var Tag= await _context.TagEntity.Where(x => x.Id == TagId).FirstOrDefaultAsync() ;
 
-            return TagMapperEntity.MapToDomain(Tag);
+            return Tag.Adapt<TagDomain>();
         }
 
         public async Task<TagDomain> Save(TagDomain tagDomain)
         {
-            var tagEntity=TagMapperEntity.MapToEntity(tagDomain);
+            var tagEntity=tagDomain.Adapt<TagEntity>();
 
             await _context.TagEntity.AddAsync(tagEntity);
             await _context.SaveChangesAsync();
 
-            return TagMapperEntity.MapToDomain(tagEntity);
+            return tagEntity.Adapt<TagDomain>();
         }
 
-        public async Task<TagDomain> Update(TagDomain tagDomain)
+        public async Task Update(TagDomain tagDomain)
         {
-            var tagEntity = TagMapperEntity.MapToEntity(tagDomain);
+            var tagEntity = tagDomain.Adapt<TagEntity>();
 
             tagEntity.CreatedAt = await _context.TagEntity.Where(x=>x.Id==tagEntity.Id)
                                                             .Select(x=>x.CreatedAt)
@@ -96,7 +97,7 @@ namespace ProjectManagement.Modules.Tags.Infraestructure.Adapters.Output.Persist
              _context.TagEntity.Update(tagEntity);
              await _context.SaveChangesAsync();
 
-            return TagMapperEntity.MapToDomain(tagEntity);
+
         }
     }
 }

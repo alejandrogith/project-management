@@ -8,7 +8,10 @@ namespace WebApiTest
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseEnvironment("Testing");
+          //  builder.UseEnvironment("Testing");
+
+            
+           
 
             base.ConfigureWebHost(builder);
         }
@@ -17,6 +20,7 @@ namespace WebApiTest
         {
             builder.ConfigureServices(services =>
             {
+                
                 // Configurar cualquier Mock o similares
             });
 

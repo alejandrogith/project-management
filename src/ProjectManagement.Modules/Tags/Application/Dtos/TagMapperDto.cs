@@ -8,7 +8,7 @@ namespace ProjectManagement.Modules.Tags.Application.Dtos
     {
         public static TagDomain MapToDomain(int TagId, TagRequestDto dto)
         {
-            return new TagDomain(TagId, dto.Name,null,null);
+            return null;
         }
 
         public static TagResponseDto MapToDto(TagDomain domain)

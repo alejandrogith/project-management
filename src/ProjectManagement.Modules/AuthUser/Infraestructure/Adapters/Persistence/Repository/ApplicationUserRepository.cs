@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Modules.AuthUser.Application.Ports.Output;
 using ProjectManagement.Modules.AuthUser.Domain.Entities;
 using ProjectManagement.Modules.AuthUser.Infraestructure.Adapters.Persistence.Entity;
 using ProjectManagement.Modules.AuthUser.Infraestructure.Adapters.Persistence.Errors;
-using ProjectManagement.Modules.AuthUser.Infraestructure.Adapters.Persistence.Mapper;
+
 using ProjectManagement.Modules.Commons.Infraestructure.Persistence;
 
 namespace ProjectManagement.Modules.AuthUser.Infraestructure.Adapters.Persistence.Repository
@@ -33,7 +34,7 @@ namespace ProjectManagement.Modules.AuthUser.Infraestructure.Adapters.Persistenc
         {
             var User=await _userManager.FindByEmailAsync(Email);
 
-            return ApplicationUserMapperEntity.MapToDomain(User);
+            return User.Adapt<ApplicationUserDomain>();
         }
 
         public async Task<ApplicationUserDomain> Login(string Email, string Password)
@@ -45,15 +46,16 @@ namespace ProjectManagement.Modules.AuthUser.Infraestructure.Adapters.Persistenc
             if (!Result.Succeeded)
                 throw new CustomUnauthorizedException($"The user credentials is invalid");
 
-            return ApplicationUserMapperEntity.MapToDomain(User);
+            return User.Adapt<ApplicationUserDomain>();
         }
 
         public async Task<ApplicationUserDomain> Register(ApplicationUserDomain domain,string Password)
         {
+            
 
-           var ApplicationUser = ApplicationUserMapperEntity.MapToEntity(domain);
+            var ApplicationUser = domain.Adapt<ApplicationUser>();
 
-           var Result= await _userManager.CreateAsync(ApplicationUser, Password);
+            var Result= await _userManager.CreateAsync(ApplicationUser, Password);
 
             if (!Result.Succeeded) {
                 var Errors = Result.Errors.Select(x=>x.Description ).ToList();
@@ -61,7 +63,8 @@ namespace ProjectManagement.Modules.AuthUser.Infraestructure.Adapters.Persistenc
                 throw new CustomIdentityErrors(Errors);
             }
            
-            return ApplicationUserMapperEntity.MapToDomain(ApplicationUser);
+
+            return ApplicationUser.Adapt<ApplicationUserDomain>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ProjectManagement.Modules.AuthUser.Application.Dtos;
+﻿using Mapster;
+using ProjectManagement.Modules.AuthUser.Application.Dtos;
 using ProjectManagement.Modules.AuthUser.Application.Ports.Input;
 using ProjectManagement.Modules.AuthUser.Application.Ports.Output;
 using ProjectManagement.Modules.AuthUser.Domain.Entities;
@@ -45,7 +46,7 @@ namespace ProjectManagement.Modules.AuthUser.Application.UseCases
 
 
 
-        public async Task<RegisterResponseDto> Register(RegisterRequestDto registerRequest)
+        public async Task<RegisterResponseDto> Register( RegisterRequestDto registerRequest)
         {
             var Exist=  await _appUserRepository.Exist(registerRequest.Email);
 
@@ -53,9 +54,9 @@ namespace ProjectManagement.Modules.AuthUser.Application.UseCases
                 throw new CustomConflictException($"The User with the email: {registerRequest.Email} already exist");
 
 
-            var ApplicationUser = ApplicationUserMappers.MapToDomain(registerRequest);
+            var ApplicationUser = registerRequest.Adapt<ApplicationUserDomain>();
 
-            ApplicationUser= await _appUserRepository.Register(ApplicationUser,registerRequest.Password);
+            ApplicationUser = await _appUserRepository.Register(ApplicationUser,registerRequest.Password);
 
             var Token = await _tokenService.GenerateToken(ApplicationUser);
 

@@ -8,4 +8,4 @@ Características
 - Manejo de seguridad con login y registro y autenticacion con JWT y Autorizacion con Roles.
 - Documentacion con swagger
 
-Tecnologias: Asp.net, c#, Identity.Net, Sql Server, Html, Css, Javascript.
+Tecnologias: Asp.net, c#, Identity.Net, Sql Server

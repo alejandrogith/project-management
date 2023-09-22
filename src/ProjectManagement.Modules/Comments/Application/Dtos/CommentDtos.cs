@@ -2,9 +2,9 @@
 
 namespace ProjectManagement.Modules.Comments.Application.Dtos
 {
-    public record CommentRequestDto(string Comment,string AsignedUserId);
+    public record CommentRequestDto(string Content, string UserId, int TaskId);
 
-    public record CommentResponseDto(int CommentId,string Comment, string AsignedUser,string TaskName,DateTime? CreatedAt,DateTime? UpdatedAt);
+    public record CommentResponseDto(int Id,string Content, string UserId, int TaskId, DateTime? CreatedAt,DateTime? UpdatedAt);
 
 
     public class CommentRequestParams : BaseRequestParams

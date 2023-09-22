@@ -1,4 +1,5 @@
 ﻿
+using Mapster;
 using ProjectManagement.Modules.Commons.Application.Dtos;
 using ProjectManagement.Modules.Commons.Domain.Exceptions;
 using ProjectManagement.Modules.Proyects.Application.Dtos;
@@ -29,7 +30,7 @@ namespace ProjectManagement.Modules.Proyects.Application.ServicesUseCases
 
             await _proyectRepository.Delete(Proyect);
 
-            return ProyectMapperDto.MapToDto(Proyect);
+            return Proyect.Adapt<ProyectResponseDto>();
         }
 
         public async Task<PaginatedDataDto<ProyectDomain>> FindAll(ProyectRequestParams proyectParams)
@@ -47,16 +48,16 @@ namespace ProjectManagement.Modules.Proyects.Application.ServicesUseCases
             if (Proyect is null)
                 throw new CustomNotFoundException($"The Proyect with the id: {Id} does not exist");
 
-            return ProyectMapperDto.MapToDto(Proyect) ;
+            return Proyect.Adapt<ProyectResponseDto>() ;
         }
 
         public async Task<ProyectResponseDto> Save(ProyectRequestDto proyectRequest)
         {
-           var Proyect = ProyectMapperDto.MapToDomain(proyectRequest);
+            var Proyect = proyectRequest.Adapt<ProyectDomain>() ;
 
             Proyect=await _proyectRepository.Save(Proyect);
 
-            return ProyectMapperDto.MapToDto(Proyect);
+            return Proyect.Adapt<ProyectResponseDto>();
         }
 
 
@@ -69,11 +70,11 @@ namespace ProjectManagement.Modules.Proyects.Application.ServicesUseCases
                 throw new CustomNotFoundException($"The Proyect with the id: {Id} does not exist");
 
 
-            Proyect = ProyectMapperDto.MapToDomain(proyectRequest);
+            Proyect = proyectRequest.Adapt<ProyectDomain>();
 
             Proyect = await _proyectRepository.Update(Proyect);
 
-            return ProyectMapperDto.MapToDto(Proyect);
+            return Proyect.Adapt<ProyectResponseDto>();
         }
 
 

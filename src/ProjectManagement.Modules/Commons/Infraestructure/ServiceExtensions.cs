@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectManagement.Modules.Commons.Infraestructure.Persistence;
 using ProjectManagement.Modules.Proyects.Application.Ports.Input;
 using ProjectManagement.Modules.Proyects.Application.ServicesUseCases;
+using System.Reflection;
 
 namespace ProjectManagement.Modules.Commons.Infraestructure
 {
@@ -18,7 +21,9 @@ namespace ProjectManagement.Modules.Commons.Infraestructure
             opciones.UseSqlServer(configuration.GetConnectionString("ConexionSQL")));
 
 
+            Services.AddFluentValidationAutoValidation();
 
+            Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         }
 

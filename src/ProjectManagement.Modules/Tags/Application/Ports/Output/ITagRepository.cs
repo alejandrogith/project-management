@@ -20,7 +20,7 @@ namespace ProjectManagement.Modules.Tags.Application.Ports.Output
 
         public Task<PaginatedDataDto<TagDomain>> FindAll(TagRequestParams requestParams);
 
-        public Task<TagDomain> Update( TagDomain tagDomain);
+        public Task Update( TagDomain tagDomain);
 
         public Task Delete(int TagId);
     }

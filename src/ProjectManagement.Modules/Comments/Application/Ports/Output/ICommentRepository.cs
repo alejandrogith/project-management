@@ -6,7 +6,7 @@ namespace ProjectManagement.Modules.Comments.Application.Ports.Output
 {
     public interface ICommentRepository
     {
-        public Task<CommentDomain> Save(int taskId,string AsignedUserId, CommentDomain commentDomain);
+        public Task<CommentDomain> Save(CommentDomain commentDomain);
 
         public Task<CommentDomain> FindById(int taskId, int CommentId);
 
@@ -14,7 +14,7 @@ namespace ProjectManagement.Modules.Comments.Application.Ports.Output
 
         public Task<PaginatedDataDto<CommentDomain>> FindAll(int taskId,CommentRequestParams requestParams);
 
-        public Task<CommentDomain> Update(int taskId, string AsignedUserId, CommentDomain commentDomain);
+        public Task Update( CommentDomain commentDomain);
 
         public Task Delete(int taskId, int CommentId);
     }

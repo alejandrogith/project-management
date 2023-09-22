@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Modules.Commons.Application.Dtos;
 using ProjectManagement.Modules.Commons.Infraestructure.Persistence;
 using ProjectManagement.Modules.Tasks.Application.Dtos;
@@ -75,7 +76,7 @@ namespace ProjectManagement.Modules.Tasks.Infraestructure.Adapters.Output.Persis
         {
             var task = await _context.TaskEntity
                             .Where(x=>x.Id==Id)
-                            .Select(x=>TaskMapperEntity.MapToDomain(x, x.Proyect.Nombre, x.AssignedUser.UserName) )
+                            .Select(x => TaskMapperEntity.MapToDomain(x, x.Proyect.Id.ToString(), x.AssignedUser.Id))
                             .AsNoTracking()
                             .FirstOrDefaultAsync();
             return task;
@@ -84,7 +85,8 @@ namespace ProjectManagement.Modules.Tasks.Infraestructure.Adapters.Output.Persis
         public async Task<TaskDomain> Save(int proyectId, TaskDomain task)
         {
 
-            var Entity = TaskMapperEntity.MapToEntity(proyectId,task);
+            var Entity = task.Adapt<TaskEntity>();
+            Entity.ProyectId=proyectId;
 
             await _context.TaskEntity.AddAsync(Entity);
             await _context.SaveChangesAsync();
@@ -92,13 +94,13 @@ namespace ProjectManagement.Modules.Tasks.Infraestructure.Adapters.Output.Persis
 
             var taskInfo = await _context.TaskEntity
                         .Where(x => x.Id == Entity.Id)
-                        .Select(x => TaskMapperEntity.MapToDomain(x, x.Proyect.Nombre, x.AssignedUser.UserName))
+                        .Select(x => TaskMapperEntity.MapToDomain(x, x.Proyect.Id.ToString(), x.AssignedUser.Id))
                         .FirstOrDefaultAsync();
 
             return taskInfo;
         }
 
-        public async Task<TaskDomain> Update(int proyectId,TaskDomain task)
+        public async Task Update(int proyectId,TaskDomain task)
         {
             var TaskEntity = TaskMapperEntity.MapToEntity(proyectId, task);
 
@@ -112,7 +114,7 @@ namespace ProjectManagement.Modules.Tasks.Infraestructure.Adapters.Output.Persis
 
 
 
-            return TaskMapperEntity.MapToDomain(TaskEntity);
+           
         }
     }
 }

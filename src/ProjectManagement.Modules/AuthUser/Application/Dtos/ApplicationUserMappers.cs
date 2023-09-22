@@ -11,10 +11,6 @@ namespace ProjectManagement.Modules.AuthUser.Application.Dtos
             return new RegisterResponseDto(Email,Username,Token);
         }
 
-        public static ApplicationUserDomain MapToDomain(RegisterRequestDto requestDto)
-        {
-            return new ApplicationUserDomain(requestDto.Email,requestDto.Username,requestDto.Name,requestDto.LastName);
-        }
 
 
     }

@@ -1,4 +1,5 @@
-﻿using ProjectManagement.Modules.Commons.Application.Dtos;
+﻿using Mapster;
+using ProjectManagement.Modules.Commons.Application.Dtos;
 using ProjectManagement.Modules.Commons.Domain.Exceptions;
 using ProjectManagement.Modules.Tags.Application.Dtos;
 using ProjectManagement.Modules.Tags.Application.Ports.Input;
@@ -40,30 +41,30 @@ namespace ProjectManagement.Modules.Tags.Application.UseCases
 
             var Tag=await _tagRepository.FindById(TagId);
 
-            return TagMapperDto.MapToDto(Tag);
+            return Tag.Adapt<TagResponseDto>();
         }
 
         public async Task<TagResponseDto> Save(TagRequestDto tagRequestDto)
         {
-           var TagDomain = TagMapperDto.MapToDomain(0,tagRequestDto);
+           var TagDomain = tagRequestDto.Adapt<TagDomain>();
 
            TagDomain= await _tagRepository.Save(TagDomain);
         
-            return TagMapperDto.MapToDto(TagDomain);
+            return TagDomain.Adapt<TagResponseDto>();
         }
 
-        public async Task<TagResponseDto> Update(int TagId, TagRequestDto tagRequestDto)
+        public async Task Update(int TagId, TagRequestDto tagRequestDto)
         {
             var Exist = await _tagRepository.Exist(TagId);
 
             if (!Exist)
                 throw new CustomNotFoundException($"The Tag with the id: {TagId} does not exist");
 
-            var TagDomain = TagMapperDto.MapToDomain(TagId, tagRequestDto);
+            var TagDomain = tagRequestDto.Adapt<TagDomain>(); 
+            TagDomain.Id= TagId;
 
-            TagDomain= await _tagRepository.Update(TagDomain);
+           await _tagRepository.Update(TagDomain);
 
-            return TagMapperDto.MapToDto(TagDomain);
         }
     }
 }

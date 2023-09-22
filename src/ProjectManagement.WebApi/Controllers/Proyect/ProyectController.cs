@@ -4,6 +4,7 @@ using ProjectManagement.Modules.Proyects.Application.Dtos;
 using ProjectManagement.Modules.Proyects.Application.Ports.Input;
 using ProjectManagement.Modules.Proyects.Domain.Entities;
 using ProjectManagement.Modules.Tasks.Domain.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 using static ProjectManagement.WebApi.Middlewares.ExceptionHandlerMiddleware;
 
 namespace ProjectManagement.WebApi.Controllers.Proyect
@@ -22,6 +23,7 @@ namespace ProjectManagement.WebApi.Controllers.Proyect
             _proyectUseCase = proyectUseCase;
         }
 
+        [SwaggerOperation("FindAll the Proyects")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
@@ -33,6 +35,7 @@ namespace ProjectManagement.WebApi.Controllers.Proyect
             return Results;
         }
 
+        [SwaggerOperation("Find Proyect by Id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
@@ -48,7 +51,7 @@ namespace ProjectManagement.WebApi.Controllers.Proyect
 
 
 
-
+        [SwaggerOperation("Create a new Proyect")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
@@ -61,6 +64,7 @@ namespace ProjectManagement.WebApi.Controllers.Proyect
         }
 
 
+        [SwaggerOperation("Update a Proyect")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
@@ -74,7 +78,7 @@ namespace ProjectManagement.WebApi.Controllers.Proyect
 
 
 
-
+        [SwaggerOperation("Delete a Proyect")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
         [HttpDelete("{id}")]
@@ -84,6 +88,14 @@ namespace ProjectManagement.WebApi.Controllers.Proyect
 
             return Proyect;
         }
+
+
+
+
+
+
+
+
     }
 
 

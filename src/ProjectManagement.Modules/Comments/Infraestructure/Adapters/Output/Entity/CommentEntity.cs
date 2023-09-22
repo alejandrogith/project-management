@@ -7,15 +7,6 @@ namespace ProjectManagement.Modules.Comments.Infraestructure.Adapters.Output.Ent
     public class CommentEntity:BaseAuditableEntity
     {
 
-        public CommentEntity() { }
-
-        public CommentEntity(int id, string content, int taskId, string userId)
-        {
-            Id = id;
-            Content = content;
-            TaskId = taskId;
-            UserId = userId;
-        }
 
         public int Id { get; set; }
         public string Content { get; set; }

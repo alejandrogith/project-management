@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Modules.Commons.Application.Dtos;
 using ProjectManagement.Modules.Commons.Infraestructure.Persistence;
 
@@ -7,9 +8,7 @@ using ProjectManagement.Modules.Proyects.Application.Ports.Output;
 using ProjectManagement.Modules.Proyects.Domain.Entities;
 
 using ProjectManagement.Modules.Proyects.Infraestructure.Adapters.Output.Persistence.Entity;
-using ProjectManagement.Modules.Proyects.Infraestructure.Adapters.Output.Persistence.Mapper;
-using ProjectManagement.Modules.Tasks.Domain.Entities;
-using ProjectManagement.Modules.Tasks.Infraestructure.Adapters.Output.Persistence.Mapper;
+
 
 namespace ProjectManagement.Modules.Proyects.Infraestructure.Adapters.Output.Persistence.Repository
 {
@@ -49,7 +48,7 @@ namespace ProjectManagement.Modules.Proyects.Infraestructure.Adapters.Output.Per
             var Proyects = await ProyectQuery
                             .Skip(proyectParams.PageSize * (proyectParams.PageIndex - 1))
                             .Take(proyectParams.PageSize)
-                            .Select(x => ProyectMapperPersistence.MapToDomain(x))
+                            .Select(x => x.Adapt<ProyectDomain>())
                             .AsNoTracking()
                             .ToListAsync();
 
@@ -64,22 +63,22 @@ namespace ProjectManagement.Modules.Proyects.Infraestructure.Adapters.Output.Per
 
         public async Task<ProyectDomain> Save(ProyectDomain proyect)
         {
-            var ProyectEntity = ProyectMapperPersistence.MapToEntity(proyect);
+            var ProyectEntity = proyect.Adapt<ProyectEntity>();
             await _context.ProyectEntity.AddAsync(ProyectEntity);
             await _context.SaveChangesAsync();
 
-            return ProyectMapperPersistence.MapToDomain(ProyectEntity);
+            return ProyectEntity.Adapt<ProyectDomain>();
         }
 
         public async Task<ProyectDomain> Update(ProyectDomain proyect)
         {
-            var Entity = ProyectMapperPersistence.MapToEntity(proyect);
+            var Entity = proyect.Adapt<ProyectEntity>();
             Entity.CreatedAt = await _context.ProyectEntity.Where(x=>x.Id==Entity.Id).Select(x => x.CreatedAt).FirstOrDefaultAsync(); 
 
             _context.ProyectEntity.Update(Entity);
             await _context.SaveChangesAsync();
 
-            return ProyectMapperPersistence.MapToDomain(Entity);
+            return Entity.Adapt<ProyectDomain>();
         }
 
         public async Task<ProyectDomain> FindById(int Id)
@@ -88,18 +87,18 @@ namespace ProjectManagement.Modules.Proyects.Infraestructure.Adapters.Output.Per
                                 .AsNoTracking()
                                 .FirstOrDefaultAsync(x => x.Id == Id);
 
-            return ProyectMapperPersistence.MapToDomain(Proyect);
+            return Proyect.Adapt<ProyectDomain>();
         }
 
         public async Task<ProyectDomain> Delete(ProyectDomain proyect)
         {
-            var Entity = ProyectMapperPersistence.MapToEntity(proyect);
+            var Entity = proyect.Adapt<ProyectEntity>();
             
             _context.ProyectEntity.Remove(Entity);
            
             await _context.SaveChangesAsync();
 
-            return ProyectMapperPersistence.MapToDomain(Entity);
+            return Entity.Adapt<ProyectDomain>();
         }
 
 

@@ -2,9 +2,9 @@
 
 namespace ProjectManagement.Modules.Proyects.Application.Dtos
 {
-    public record ProyectResponseDto(int Id, string Nombre, string Descripción ,DateTime? CreatedAt, DateTime? UpdatedAt);
+    public record ProyectResponseDto(int Id, string Nombre, string Descripcion, DateTime? CreatedAt, DateTime? UpdatedAt);
 
-    public record ProyectRequestDto(int Id,string Nombre, string Descripción);
+    public record ProyectRequestDto(int Id,string Nombre, string Descripcion);
 
     public class ProyectRequestParams: BaseRequestParams {
 

@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Modules.Comments.Application.Dtos;
 using ProjectManagement.Modules.Comments.Application.Ports.Output;
 using ProjectManagement.Modules.Comments.Domain.Entities;
 using ProjectManagement.Modules.Comments.Infraestructure.Adapters.Output.Entity;
-using ProjectManagement.Modules.Comments.Infraestructure.Adapters.Output.Mapper;
+
 using ProjectManagement.Modules.Commons.Application.Dtos;
 using ProjectManagement.Modules.Commons.Infraestructure.Persistence;
-using ProjectManagement.Modules.Proyects.Infraestructure.Adapters.Output.Persistence.Mapper;
+
 
 namespace ProjectManagement.Modules.Comments.Infraestructure.Adapters.Output.Repository
 {
@@ -39,7 +40,7 @@ namespace ProjectManagement.Modules.Comments.Infraestructure.Adapters.Output.Rep
             if (!string.IsNullOrEmpty(requestParams.Search))
                 Query = Query.Where(x => x.Content.Contains(requestParams.Search));
 
-
+            if (taskId > 0)
                 Query = Query.Where(x => x.TaskId == taskId);
 
             if (!string.IsNullOrEmpty(requestParams.Sort))
@@ -55,7 +56,7 @@ namespace ProjectManagement.Modules.Comments.Infraestructure.Adapters.Output.Rep
             var Comments = await Query
                             .Skip(requestParams.PageSize * (requestParams.PageIndex - 1))
                             .Take(requestParams.PageSize)
-                            .Select(x => CommentMapperEntity.MapToDomain(x.Task.Title, x.CreatorUser.Name, x))
+                            .Select(x => x.Adapt<CommentDomain>())
                             .AsNoTracking()
                             .ToListAsync();
 
@@ -69,29 +70,28 @@ namespace ProjectManagement.Modules.Comments.Infraestructure.Adapters.Output.Rep
         public async Task<CommentDomain> FindById(int taskId, int CommentId)
         {
             var Comment = await _dbContext.CommentEntity.Where(x => x.Id ==CommentId && x.TaskId==taskId)
-                               .Select(x => CommentMapperEntity.MapToDomain(x.Task.Title, x.CreatorUser.Name, x))
+                               .Select(x => x.Adapt<CommentDomain>())
                                .FirstOrDefaultAsync();
 
             return Comment;
         }
 
-        public async Task<CommentDomain> Save(int taskId, string AsignedUserId, CommentDomain commentDomain)
+        public async Task<CommentDomain> Save( CommentDomain commentDomain)
         {
-            var CommentEntity=CommentMapperEntity.MapToEntity(taskId, AsignedUserId,commentDomain);
+            var CommentEntity = commentDomain.Adapt<CommentEntity>();
 
             await _dbContext.CommentEntity.AddAsync(CommentEntity);
             await _dbContext.SaveChangesAsync();
 
             var Comment =await _dbContext.CommentEntity.Where(x => x.Id == CommentEntity.Id)
-                                           .Select(x => CommentMapperEntity.MapToDomain(x.Task.Title,x.CreatorUser.Name,x ))
                                            .FirstOrDefaultAsync();
 
-            return Comment;
+            return Comment.Adapt<CommentDomain>();
         }
 
-        public async Task<CommentDomain> Update(int taskId, string AsignedUserId, CommentDomain commentDomain)
+        public async Task Update(CommentDomain commentDomain)
         {
-            var CommentEntity = CommentMapperEntity.MapToEntity(taskId, AsignedUserId, commentDomain);
+            var CommentEntity = commentDomain.Adapt<CommentEntity>();
             CommentEntity.CreatedAt = await _dbContext.CommentEntity.Where(x => x.Id == CommentEntity.Id)
                                                             .Select(x => x.CreatedAt)
                                                             .FirstOrDefaultAsync();
@@ -99,11 +99,7 @@ namespace ProjectManagement.Modules.Comments.Infraestructure.Adapters.Output.Rep
             _dbContext.CommentEntity.Update(CommentEntity);
             await _dbContext.SaveChangesAsync();
 
-            var Comment = await _dbContext.CommentEntity.Where(x => x.Id == CommentEntity.Id)
-                               .Select(x => CommentMapperEntity.MapToDomain(x.Task.Title, x.CreatorUser.Name, x))
-                               .FirstOrDefaultAsync();
-
-            return Comment;
+           
         }
 
 

@@ -3,7 +3,7 @@
 namespace ProjectManagement.Modules.Tags.Application.Dtos
 {
     public record TagRequestDto(string Name);
-    public record TagResponseDto(int TaskId, string Name,DateTime? CreateAt,DateTime? UpdateAt);
+    public record TagResponseDto(int Id, string Name,DateTime? CreatedAt,DateTime? UpdatedAt);
 
     public class TagRequestParams : BaseRequestParams
     {

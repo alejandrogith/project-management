@@ -1,5 +1,6 @@
 ﻿using ProjectManagement.Modules.Tasks.Domain.Entities;
 using ProjectManagement.Modules.Tasks.Infraestructure.Adapters.Output.Persistence.Entity;
+using System.Threading.Tasks;
 
 namespace ProjectManagement.Modules.Tasks.Infraestructure.Adapters.Output.Persistence.Mapper
 {
@@ -18,7 +19,8 @@ namespace ProjectManagement.Modules.Tasks.Infraestructure.Adapters.Output.Persis
                 State = task.State,
                 Priority = task.Priority,
                 Type = task.Type,
-                AssignedUser = asignedUser,
+                AssignedUserId = asignedUser,
+                TagId= task.TagId,
                 Proyect = proyect,
                 CreatedAt = task.CreatedAt,
                 UpdatedAt = task.UpdatedAt,
@@ -39,7 +41,8 @@ namespace ProjectManagement.Modules.Tasks.Infraestructure.Adapters.Output.Persis
                 State = domain.State,
                 Priority = domain.Priority,
                 Type = domain.Type,
-                AssignedUserId = domain.AssignedUser,
+                TagId = domain.TagId,
+                AssignedUserId = domain.AssignedUserId,
                 ProyectId = proyectId
 
             };

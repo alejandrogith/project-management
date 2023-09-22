@@ -1,4 +1,5 @@
-﻿using ProjectManagement.Modules.Comments.Application.Dtos;
+﻿using Mapster;
+using ProjectManagement.Modules.Comments.Application.Dtos;
 using ProjectManagement.Modules.Comments.Application.Ports.Input;
 using ProjectManagement.Modules.Comments.Application.Ports.Output;
 using ProjectManagement.Modules.Comments.Domain.Entities;
@@ -43,33 +44,35 @@ namespace ProjectManagement.Modules.Comments.Application.UseCases
 
             var Comment = await _commentRepository.FindById(TaskId, CommentId);
 
-            return CommentMapperDto.MapToDto(Comment);
+            return Comment.Adapt<CommentResponseDto>();
         }
 
-        public async Task<CommentResponseDto> Save(int proyectId,CommentRequestDto commentRequest)
+        public async Task<CommentResponseDto> Save(CommentRequestDto commentRequest)
         {
 
-           var CommentDomain=CommentMapperDto.MapToDomain(0,commentRequest);
+           var CommentDomain=commentRequest.Adapt<CommentDomain>();
 
-           var comment=await _commentRepository.Save(proyectId,commentRequest.AsignedUserId, CommentDomain);
+           var comment=await _commentRepository.Save(CommentDomain);
 
 
-           return CommentMapperDto.MapToDto(comment);
+           return comment.Adapt<CommentResponseDto>();
         }
 
-        public async Task<CommentResponseDto> Update(int TaskId, int CommentId, CommentRequestDto commentRequest)
+        public async Task Update(int TaskId, int CommentId, CommentRequestDto commentRequest)
         {
             var Exist = await _commentRepository.Exist(TaskId, CommentId);
 
             if (!Exist)
                 throw new CustomNotFoundException($"The Comment with the id: {CommentId} does not exist");
 
-            var CommentDomain = CommentMapperDto.MapToDomain(CommentId,commentRequest);
+            var CommentDomain = commentRequest.Adapt<CommentDomain>();
 
-            CommentDomain = await _commentRepository.Update(TaskId,commentRequest.AsignedUserId,CommentDomain);
+            CommentDomain.Id = CommentId;
+
+            await _commentRepository.Update(CommentDomain);
 
 
-            return CommentMapperDto.MapToDto(CommentDomain);
+
         }
     }
 }

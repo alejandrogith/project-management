@@ -9,12 +9,12 @@ namespace ProjectManagement.Modules.Tags.Infraestructure.Adapters.Output.Persist
     {
         public static TagDomain MapToDomain(TagEntity tag)
         {
-            return new TagDomain(tag.Id, tag.Name,tag.CreatedAt,tag.UpdatedAt);
+            return  null;
         }
 
         public static TagEntity MapToEntity(TagDomain domain)
         {
-            return new TagEntity(domain.Id, domain.Name);
+            return null;
         }
 
     }

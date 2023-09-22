@@ -6,13 +6,6 @@ namespace ProjectManagement.Modules.Tags.Infraestructure.Adapters.Output.Persist
     public class TagEntity:BaseAuditableEntity
     {
 
-        public TagEntity(){}
-
-        public TagEntity(int id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
 
         public int Id { get; set; }
 

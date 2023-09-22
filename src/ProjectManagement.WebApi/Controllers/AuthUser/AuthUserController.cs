@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Modules.AuthUser.Application.Dtos;
 using ProjectManagement.Modules.AuthUser.Application.Ports.Input;
 using ProjectManagement.Modules.AuthUser.Domain.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using static ProjectManagement.WebApi.Middlewares.ExceptionHandlerMiddleware;
 
@@ -20,6 +21,9 @@ namespace ProjectManagement.WebApi.Controllers.AuthUser
             _appUserUseCase = appUserUseCase;
         }
 
+
+
+        [SwaggerOperation("Register a new User")]
         [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -32,6 +36,7 @@ namespace ProjectManagement.WebApi.Controllers.AuthUser
             return CreatedAtAction(nameof(Register), RegisterData);
         }
 
+        [SwaggerOperation("Login a new User")]
         [AllowAnonymous]
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -45,7 +50,7 @@ namespace ProjectManagement.WebApi.Controllers.AuthUser
 
 
 
-
+        [SwaggerOperation("Get User Details")]
         [HttpGet("useraccount")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]

@@ -6,13 +6,7 @@ namespace ProjectManagement.Modules.AuthUser.Infraestructure.Adapters.Persistenc
 {
     public class ApplicationUser : IdentityUser
     {
-        public ApplicationUser(string email, string userName,string name, string lastName)
-        {
-            Name = name;
-            LastName = lastName;
-            this.Email = email;
-            this.UserName = userName;
-        }
+
 
         public string Name { get; set; }
 

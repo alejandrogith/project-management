@@ -1,4 +1,5 @@
-﻿using ProjectManagement.Modules.Commons.Application.Dtos;
+﻿using Mapster;
+using ProjectManagement.Modules.Commons.Application.Dtos;
 using ProjectManagement.Modules.Commons.Domain.Exceptions;
 using ProjectManagement.Modules.Tasks.Application.Dtos;
 using ProjectManagement.Modules.Tasks.Application.ports.Input;
@@ -42,32 +43,32 @@ public class TaskUseCase : ITaskUseCase
 
         var Task= await _taskRepository.FindById(Id);
     
-        return TaskMapperDto.MapToDto(Task);
+        return Task.Adapt<TaskResponseDto>();
     }
 
     public async Task<TaskResponseDto> Save(int proyectId,TaskRequestDto taskDomain)
     {
-        var Task = TaskMapperDto.MapToDomain(taskDomain);
+        var Task = taskDomain.Adapt<TaskDomain>();
         
         Task= await _taskRepository.Save(proyectId,Task);
 
-        return TaskMapperDto.MapToDto(Task); 
+        return Task.Adapt<TaskResponseDto>(); 
     }
 
-    public async Task<TaskResponseDto> Update(int proyectId,int Id, TaskRequestDto proyectRequest)
+    public async Task Update(int proyectId,int Id, TaskRequestDto proyectRequest)
     {
         var Exist = await _taskRepository.Exist(proyectId, Id);
 
         if (!Exist)
             throw new CustomNotFoundException($"The Task with the id: {Id} does not exist");
 
-        
-        var Task=TaskMapperDto.MapToDomain(proyectRequest);
+
+        var Task = proyectRequest.Adapt<TaskDomain>(); ;
         Task.Id = Id;
 
-        Task = await _taskRepository.Update(proyectId,Task);
+         await _taskRepository.Update(proyectId,Task);
 
-        return TaskMapperDto.MapToDto(Task);
+    
     }
 }
 

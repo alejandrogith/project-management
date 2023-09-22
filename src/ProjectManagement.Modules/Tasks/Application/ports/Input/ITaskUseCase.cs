@@ -17,7 +17,7 @@ namespace ProjectManagement.Modules.Tasks.Application.ports.Input
 
         public Task<TaskResponseDto> FindById(int proyectId,int Id);
 
-        public Task<TaskResponseDto> Update(int proyectId,int Id, TaskRequestDto proyectRequest);
+        public Task Update(int proyectId,int Id, TaskRequestDto proyectRequest);
 
         public Task Delete(int proyectId,int Id);
 
