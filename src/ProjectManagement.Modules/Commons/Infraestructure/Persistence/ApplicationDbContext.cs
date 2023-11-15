@@ -28,6 +28,7 @@ namespace ProjectManagement.Modules.Commons.Infraestructure.Persistence
         public DbSet<TagEntity> TagEntity { get; set; }
 
 
+
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

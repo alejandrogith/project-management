@@ -19,8 +19,11 @@ namespace ProjectManagement.WebApi.Controllers.AuthUser
         public AuthUserController(IApplicationUserUseCase appUserUseCase)
         {
             _appUserUseCase = appUserUseCase;
+
+            funct = (int res) => res;
         }
 
+        private Func<int, int> funct;
 
 
         [SwaggerOperation("Register a new User")]
@@ -72,5 +75,5 @@ namespace ProjectManagement.WebApi.Controllers.AuthUser
 
 
 
-        }
+    }
 }

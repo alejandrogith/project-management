@@ -8,9 +8,7 @@ namespace ProjectManagement.Modules.AuthUser.Infraestructure.Adapters.Persistenc
     {
 
 
-        public string Name { get; set; }
 
-        public string LastName { get; set; }
 
 
         public List<TaskEntity> Tasks { get; set; }

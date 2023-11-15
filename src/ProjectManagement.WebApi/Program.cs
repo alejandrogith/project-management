@@ -92,7 +92,7 @@ builder.Services.AddCors(p =>
 var app = builder.Build();
 
 
-
+app.MapGet("/healt", () =>"Server Live !!!" );
 
 
 

@@ -29,9 +29,7 @@ namespace ProjectManagement.Modules.AuthUser.Infraestructure.Adapters
         {
             var claims = new List<Claim>() {
                 new Claim(JwtRegisteredClaimNames.Email,User.Email),
-                new Claim(JwtRegisteredClaimNames.Name,User.Name),
-                new Claim(JwtRegisteredClaimNames.FamilyName,User.LastName),
-                new Claim("Username",User.UserName)
+                new Claim("username",User.UserName)
             };
 
 
